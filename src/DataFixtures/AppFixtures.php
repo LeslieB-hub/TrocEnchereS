@@ -136,7 +136,7 @@ class AppFixtures extends Fixture
 
     private function makeUsername(User $user):string
     {
-        $username = substr($user->getFirstname(), 0, 1).$user->getLastname();
+        $username = strtolower(substr($user->getFirstname(), 0, 1).$user->getLastname());
         return $this->remove_accents($username);
     }
 }
