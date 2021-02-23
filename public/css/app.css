@@ -1,0 +1,39 @@
+
+body {
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    width: auto;
+    padding: 2vw;
+}
+
+header {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+}
+
+.alert-success {
+    text-align: center;
+}
+
+.alert-warning {
+    text-align: center;
+}
+
+img,
+header  {
+    height: auto;
+    text-align: center;
+}
+
+img,
+table,
+td,
+textarea,
+input,
+iframe,
+header {
+    max-width: 100%;
+}
