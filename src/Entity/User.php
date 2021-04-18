@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -22,6 +23,8 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Entrer un pseudo, s'il vous plaît!")
+     * @Assert\Regex(pattern="/^[a-zA-Z0-9]+$/", message="Ce pseudo n'est pas valide!")
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
@@ -38,17 +41,27 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @Assert\NotBlank(message="Entrer votre prénom, s'il vous plaît!")
+     * @Assert\Length(min = 2, max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters")
      * @ORM\Column(type="string", length=50)
      */
     private $firstname;
 
     /**
+     * @Assert\NotBlank(message="Entrer votre nom, s'il vous plaît!")
+     * @Assert\Length(min = 2, max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters")
      * @ORM\Column(type="string", length=50)
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Entrer votre email, s'il vous plaît!")
+     * @Assert\Email(message="L'email {{ value }}, n'est pas valide!")
+     * @ORM\Column(type="string", length=30, unique=true)
      */
     private $email;
 
