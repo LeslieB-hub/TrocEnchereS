@@ -11,7 +11,9 @@
     <div>
         <div class="row d-flex justify-content-center">
             <div class="col-md-6">
-                <h1>Inscription</h1>
+                <div class="row p-2 justify-content-center">
+                    <h1 class="p-3">Inscription</h1>
+                </div>
                 {{ form_start(registrationForm) }}
                 <div class="row">
                     <div class="col">
@@ -46,11 +48,21 @@
                     </div>
                 </div>
                 <br>
+                {% if(app.user) %}
+                    <div class="form-group button_center">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Enregistrer</button>
+                        <br>
+                        <a href="{{ path('user_delete', {'id': app.user.id}) }}">
+                            <button class="btn btn-secondary btn-lg btn-block" type="button">Supprimer mon compte</button>
+                        </a>
+                    </div>
+                {% else %}
                 <div class="form-group button_center">
                     <button class="btn btn-primary btn-lg btn-block" type="submit">S'inscrire</button>
                     <br>
                     <a href="{{ path('app_home') }}"><button class="btn btn-secondary btn-lg btn-block" type="button">Retour</button></a>
                 </div>
+                {% endif %}
                 {{ form_end(registrationForm) }}
             </div>
         </div>
