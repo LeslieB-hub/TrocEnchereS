@@ -85,7 +85,7 @@ class UserController extends AbstractController
             $this->addFlash("error", "Vous n'avez pas le droit de modifier ce compte");
         }
 
-        //éviter l'erreur
+        //Clear token and session to avoid error
         $request->getSession()->invalidate();
         $tokenStorage->setToken(); // TokenStorageInterface
 

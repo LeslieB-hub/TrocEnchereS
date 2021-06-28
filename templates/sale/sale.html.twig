@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Nouvelle vente{% endblock %}
+
+{% block main %}
+    <div>
+        <h1>Nouvelle vente</h1>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                {{ form_start(saleForm) }}
+                {{ form_row(saleForm.item) }}
+                {{ form_row(saleForm.description) }}
+                {{ form_row(saleForm.category) }}
+                {{ form_row(saleForm.initialPrice) }}
+                {{ form_row(saleForm.endDateBid) }}
+                {{ form_row(saleForm.startDateBid) }}
+                {#{{ form_row(saleForm.withdrawalPlace) }}#}
+                {{ form_end(saleForm) }}
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -90,6 +90,22 @@ class User implements UserInterface
      */
     private $balance;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Sale::class, mappedBy="seller", orphanRemoval=true)
+     */
+    private $salesPublished;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sale::class, mappedBy="buyerUser")
+     */
+    private $saleWon;
+
+    public function __construct()
+    {
+        $this->salesPublished = new ArrayCollection();
+        $this->saleWon = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -258,6 +274,66 @@ class User implements UserInterface
     public function setBalance(?int $balance): self
     {
         $this->balance = $balance;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sale[]
+     */
+    public function getSalesPublished(): Collection
+    {
+        return $this->salesPublished;
+    }
+
+    public function addSalesPublished(Sale $salesPublished): self
+    {
+        if (!$this->salesPublished->contains($salesPublished)) {
+            $this->salesPublished[] = $salesPublished;
+            $salesPublished->setSeller($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalesPublished(Sale $salesPublished): self
+    {
+        if ($this->salesPublished->removeElement($salesPublished)) {
+            // set the owning side to null (unless already changed)
+            if ($salesPublished->getSeller() === $this) {
+                $salesPublished->setSeller(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sale[]
+     */
+    public function getSaleWon(): Collection
+    {
+        return $this->saleWon;
+    }
+
+    public function addSaleWon(Sale $saleWon): self
+    {
+        if (!$this->saleWon->contains($saleWon)) {
+            $this->saleWon[] = $saleWon;
+            $saleWon->setBuyerUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSaleWon(Sale $saleWon): self
+    {
+        if ($this->saleWon->removeElement($saleWon)) {
+            // set the owning side to null (unless already changed)
+            if ($saleWon->getBuyerUser() === $this) {
+                $saleWon->setBuyerUser(null);
+            }
+        }
 
         return $this;
     }
