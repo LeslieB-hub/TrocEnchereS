@@ -47,13 +47,13 @@ class SaleType extends AbstractType
                 'choice_label'=> 'name',
                 'placeholder' => 'Sélectionnez une catégorie'
             ])
-            /*->add('seller', EntityType::class, [
-                'label' => 'Vendeur :',
-                'class' => User::class
-            ])
             ->add('withdrawalPlace', EntityType::class, [
                 'label'=> 'Retrait :',
                 'class'=> Withdrawal::class,
+            ])
+            /*->add('seller', EntityType::class, [
+                'label' => 'Vendeur :',
+                'class' => User::class
             ])
             ->add('salePrice', NumberType::class, [
                 'label'=> 'Meilleur offre :'

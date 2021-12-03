@@ -33,7 +33,7 @@ class Withdrawal
     private $city;
 
     /**
-     * @ORM\OneToOne(targetEntity=Sale::class, mappedBy="withdrawal", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Sale::class, mappedBy="withdrawalPlace", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="saleNumber", referencedColumnName="id", unique=true)
      */
     private $sale;

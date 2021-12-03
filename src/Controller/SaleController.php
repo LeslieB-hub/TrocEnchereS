@@ -50,7 +50,7 @@ class SaleController extends AbstractController
         dump($sale);
         dump($sale->getSeller());
         $sale->setWithdrawalPlace($withdrawalPlace);
-
+        dump($withdrawalPlace);
 
         $saleForm = $this->createForm(SaleType::class, $sale, array('withdrawalPlace' => $withdrawalPlace));
         $saleForm->handleRequest($request);
