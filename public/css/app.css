@@ -16,10 +16,22 @@ header {
 
 .alert-success {
     text-align: center;
+    color: #5eb5e0;
 }
 
 .alert-warning {
     text-align: center;
+    color: red;
+}
+
+.flash-warning {
+    text-align: center;
+    color: red;
+}
+
+.flash-success {
+    text-align: center;
+    color: #5eb5e0;
 }
 
 img,

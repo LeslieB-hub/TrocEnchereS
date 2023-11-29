@@ -54,26 +54,26 @@ class Sale
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sales")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $seller;
-
-    /**
      * @ORM\OneToOne(targetEntity=withdrawal::class, inversedBy="sale", cascade={"persist", "remove"})
      */
     private $withdrawalPlace;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
-    private $buyer;
 
     /**
      * @ORM\ManyToOne(targetEntity=State::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $state;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="salesPublished", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $seller;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="saleWon")
+     */
+    private $buyerUser;
 
     public function getId(): ?int
     {
@@ -188,18 +188,6 @@ class Sale
         return $this;
     }
 
-    public function getBuyer(): ?User
-    {
-        return $this->buyer;
-    }
-
-    public function setBuyer(?User $buyer): self
-    {
-        $this->buyer = $buyer;
-
-        return $this;
-    }
-
     public function getState(): ?State
     {
         return $this->state;
@@ -208,6 +196,18 @@ class Sale
     public function setState(?State $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getBuyerUser(): ?User
+    {
+        return $this->buyerUser;
+    }
+
+    public function setBuyerUser(?User $buyerUser): self
+    {
+        $this->buyerUser = $buyerUser;
 
         return $this;
     }

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -22,6 +23,8 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Entrer un pseudo, s'il vous plaît!")
+     * @Assert\Regex(pattern="/^[a-zA-Z0-9]+$/", message="Ce pseudo n'est pas valide!")
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
@@ -38,17 +41,27 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @Assert\NotBlank(message="Entrer votre prénom, s'il vous plaît!")
+     * @Assert\Length(min = 2, max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters")
      * @ORM\Column(type="string", length=50)
      */
     private $firstname;
 
     /**
+     * @Assert\NotBlank(message="Entrer votre nom, s'il vous plaît!")
+     * @Assert\Length(min = 2, max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters")
      * @ORM\Column(type="string", length=50)
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Entrer votre email, s'il vous plaît!")
+     * @Assert\Email(message="L'email {{ value }}, n'est pas valide!")
+     * @ORM\Column(type="string", length=30, unique=true)
      */
     private $email;
 
@@ -76,6 +89,22 @@ class User implements UserInterface
      * @ORM\Column(type="integer", nullable=true)
      */
     private $balance;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sale::class, mappedBy="seller", orphanRemoval=true)
+     */
+    private $salesPublished;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sale::class, mappedBy="buyerUser")
+     */
+    private $saleWon;
+
+    public function __construct()
+    {
+        $this->salesPublished = new ArrayCollection();
+        $this->saleWon = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -245,6 +274,66 @@ class User implements UserInterface
     public function setBalance(?int $balance): self
     {
         $this->balance = $balance;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sale[]
+     */
+    public function getSalesPublished(): Collection
+    {
+        return $this->salesPublished;
+    }
+
+    public function addSalesPublished(Sale $salesPublished): self
+    {
+        if (!$this->salesPublished->contains($salesPublished)) {
+            $this->salesPublished[] = $salesPublished;
+            $salesPublished->setSeller($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalesPublished(Sale $salesPublished): self
+    {
+        if ($this->salesPublished->removeElement($salesPublished)) {
+            // set the owning side to null (unless already changed)
+            if ($salesPublished->getSeller() === $this) {
+                $salesPublished->setSeller(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sale[]
+     */
+    public function getSaleWon(): Collection
+    {
+        return $this->saleWon;
+    }
+
+    public function addSaleWon(Sale $saleWon): self
+    {
+        if (!$this->saleWon->contains($saleWon)) {
+            $this->saleWon[] = $saleWon;
+            $saleWon->setBuyerUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSaleWon(Sale $saleWon): self
+    {
+        if ($this->saleWon->removeElement($saleWon)) {
+            // set the owning side to null (unless already changed)
+            if ($saleWon->getBuyerUser() === $this) {
+                $saleWon->setBuyerUser(null);
+            }
+        }
 
         return $this;
     }
